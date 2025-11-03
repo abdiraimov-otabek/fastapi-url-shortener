@@ -1,7 +1,7 @@
 
 
-<p align="center">
-  <h1>FastAPI URL Shortener</h1>
+<p>
+  <h1 align="center">FastAPI URL Shortener</h1>
 </p>
 
 A simple URL shortener built with **FastAPI** and **SQLite**.
