@@ -1,9 +1,32 @@
 
 
-# FastAPI URL Shortener
+<p align="center"># FastAPI URL Shortener</p>
 
 A simple URL shortener built with **FastAPI** and **SQLite**.
 Shorten long URLs and redirect users to the original URL. Includes click tracking.
+
+---
+
+<p align="center">
+  <a href="https://www.python.org/">
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  </a>
+  <a href="https://fastapi.tiangolo.com">
+      <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI">
+  </a>
+  <a href="https://www.sqlite.org/index.html">
+      <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite">
+  </a>
+  <a href="https://github.com/your-username/your-repo">
+      <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+  </a>
+  <a href="">
+      <img src="https://img.shields.io/badge/Status-Beta-yellow?style=for-the-badge" alt="Status">
+  </a>
+  <a href="">
+      <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License">
+  </a>
+</p>
 
 ---
 
