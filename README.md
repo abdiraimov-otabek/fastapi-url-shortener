@@ -1,6 +1,8 @@
 
 
-<p align="center">FastAPI URL Shortener</p>
+<p align="center">
+  <h1>FastAPI URL Shortener</h1>
+</p>
 
 A simple URL shortener built with **FastAPI** and **SQLite**.
 Shorten long URLs and redirect users to the original URL. Includes click tracking.
