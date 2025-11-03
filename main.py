@@ -1,25 +1,19 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.responses import RedirectResponse
-from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 from database import SessionLocal, engine, Base
 from models import URL
 from utils import generate_short_code
 
-# Create DB tables
 Base.metadata.create_all(bind=engine)
+app = FastAPI()
 
-app = FastAPI(
-    title="URL Shortener",
-    description="A simple URL shortener service",
-    version="1.0.0",
-    openapi_tags=[
-        {
-            "name": "URL Shortener",
-            "description": "Operations related to URL shortening and redirection",
-        }
-    ],
-)
+# Serve static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 
 # Dependency
@@ -36,8 +30,22 @@ class URLCreate(BaseModel):
     original_url: str
 
 
+# Frontend page
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/dashboard/")
+def dashboard(request: Request, db: Session = Depends(get_db)):
+    urls = db.query(URL).all()
+    return templates.TemplateResponse(
+        "dashboard.html", {"request": request, "urls": urls}
+    )
+
+
 # Create short URL
-@app.post("/shorten/", tags=["URL Shortener"])
+@app.post("/shorten/")
 def create_short_url(url: URLCreate, db: Session = Depends(get_db)):
     code = generate_short_code()
     db_url = URL(original_url=url.original_url, short_code=code)
@@ -47,8 +55,8 @@ def create_short_url(url: URLCreate, db: Session = Depends(get_db)):
     return {"short_url": f"http://localhost:8000/{code}"}
 
 
-# Redirect
-@app.get("/{code}", tags=["URL Shortener"])
+# Redirect short URL
+@app.get("/{code}")
 def redirect_url(code: str, db: Session = Depends(get_db)):
     url = db.query(URL).filter(URL.short_code == code).first()
     if url:
@@ -56,13 +64,3 @@ def redirect_url(code: str, db: Session = Depends(get_db)):
         db.commit()
         return RedirectResponse(url.original_url)
     raise HTTPException(status_code=404, detail="URL not found")
-
-
-# Optional: List all URLs (for testing)
-@app.get("/urls/", tags=["URL Shortener"])
-def list_urls(db: Session = Depends(get_db)):
-    urls = db.query(URL).all()
-    return [
-        {"original": u.original_url, "short": u.short_code, "clicks": u.clicks}
-        for u in urls
-    ]

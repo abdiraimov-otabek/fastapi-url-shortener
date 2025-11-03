@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>URL Dashboard</title>
+        <link rel="stylesheet" href="/static/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Dashboard</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Original URL</th>
+                        <th>Short URL</th>
+                        <th>Clicks</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for url in urls %}
+                    <tr>
+                        <td>{{ url.original_url }}</td>
+                        <td>
+                            <a href="/{{ url.short_code }}" target="_blank"
+                                >{{ url.short_code }}</a
+                            >
+                        </td>
+                        <td>{{ url.clicks }}</td>
+                        <td>
+                            <button onclick="copyLink('{{ url.short_code }}')">
+                                Copy
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="link">
+                <a href="/">Back to Home</a>
+            </div>
+        </div>
+        <script>
+            function copyLink(code) {
+                navigator.clipboard.writeText(
+                    window.location.origin + "/" + code,
+                );
+                alert("Copied: " + window.location.origin + "/" + code);
+            }
+        </script>
+    </body>
+</html>
